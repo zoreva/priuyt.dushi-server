@@ -1,4 +1,5 @@
 const PORT = process.env.PORT || 8080;
+const GET_HOST = process.env.GET_HOST || 'http://localhost';
 
 const {nanoid} = require('nanoid');
 const {Client} = require('pg');
@@ -6,7 +7,7 @@ const {Client} = require('pg');
 /********** Api ***********/
 
 /** POST /api/email/add */
-console.log(`##email http://localhost:${PORT}/api/email/add`);
+console.log(`##email ${GET_HOST}:${PORT}/api/email/add`);
 exports.toAddUserContact = (req, res) => {
     const {siteType, siteExsistUrl, clientName, email, contacts, exampleSitesUrls, functionOfSite, designSite, regionAudit, auditorsSite} = req.body;
 
@@ -38,7 +39,7 @@ exports.toAddUserContact = (req, res) => {
 };
 
 /** GET /api/get/contacts/:id */
-console.log(`##email http://localhost:${PORT}/api/get/contacts/:id`);
+console.log(`##email ${GET_HOST}:${PORT}/api/get/contacts/:id`);
 exports.toReadUserContact = (req, res) => {
     const {id} = req.params;
     const client = new Client({
@@ -83,7 +84,7 @@ exports.toReadUserContact = (req, res) => {
 /*
 SELECT id, create_date, site_type, site_exsist_url, client_name, email, example_sites_urls, function_of_site, design_site, region_audit, auditors_site, another_contacts FROM public.wr_requests;
 */
-console.log(`##email http://localhost:${PORT}/api/email/get/all`);
+console.log(`##email ${GET_HOST}:${PORT}/api/email/get/all`);
 exports.toReadUserContactsAll = (req, res) => {
     const client = new Client({
         connectionString: process.env.POSTGRES_URI,
@@ -110,7 +111,7 @@ exports.toReadUserContactsAll = (req, res) => {
 };
 
 /** DELETE /api/contacts/delete/:id */
-console.log(`##email http://localhost:${PORT}/api/contacts/delete/:id`);
+console.log(`##email ${GET_HOST}:${PORT}/api/contacts/delete/:id`);
 exports.deleteContactById = (req, res) => {
     const {id} = req.params;
     console.log('START DELETE', id);

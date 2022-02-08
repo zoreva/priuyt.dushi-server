@@ -69,6 +69,7 @@
     </main>
 
     <script>
+        const GET_HOST = 'https://priyut-dushi-server.herokuapp.com' || 'http://localhost:8084'
         const DATE_SERVER_START = new Date();
         const dateSpan = document.getElementById('DATE_SERVER_START');
         dateSpan.innerText = DATE_SERVER_START;
@@ -76,7 +77,7 @@
         const resultBlock = document.getElementById('resultBlock');
 
         function getAllStoriesButton() {
-            fetch('http://localhost:8084/api/admin/get/all')
+            fetch(`${GET_HOST}/api/admin/get/all`)
             .then((res) => res.json())
             .then((data) => data.map((item) => {
                 resultBlock.insertAdjacentHTML('beforeend', `
@@ -89,7 +90,7 @@
                             <td>${item.background}</td>
                             <td>${item.book}</td>
                             <td>
-                                <a onclick="fetch('http://localhost:8084/api/admin/delete/${item.id}', {method: 'DELETE'})" class="btn btn-danger d-inline">Del</a>
+                                <a onclick="fetch('${GET_HOST}/api/admin/delete/${item.id}', {method: 'DELETE'})" class="btn btn-danger d-inline">Del</a>
                             </td>
                         </tr>
                     `)
@@ -120,12 +121,10 @@
         async function addNewPoetry() {
             const addNewPoetryForm = new FormData(document.getElementById('addNewPoetryForm'));
 
-            let response = await fetch('http://localhost:8084/api/admin/add-new-poetry', {
+            let response = await fetch(`${GET_HOST}/api/admin/add-new-poetry`, {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json;charset=utf-8'
-                    // 'Content-Type': 'application/x-www-form-urlencoded',
-                    // 'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json;charset=utf-8',
                 },
                 body: JSON.stringify(mapDataToServer()),
             });

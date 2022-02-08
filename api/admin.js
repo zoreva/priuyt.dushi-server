@@ -1,4 +1,5 @@
 const PORT = process.env.PORT || 8080;
+const GET_HOST = process.env.GET_HOST || 'http://localhost';
 
 const {nanoid} = require('nanoid');
 const {Client} = require('pg');
@@ -13,7 +14,7 @@ const connectDB = function () {
 }
 
 /** GET /api/admin/get/all */
-console.log(`##admin http://localhost:${PORT}/api/admin/get/all`);
+console.log(`##admin ${GET_HOST}:${PORT}/api/admin/get/all`);
 exports.getPoetryAll = (req, res) => {
     const client = connectDB();
 
@@ -35,7 +36,7 @@ exports.getPoetryAll = (req, res) => {
 };
 
 /** POST /api/admin/add-new-poetry */
-console.log(`##admin http://localhost:${PORT}/api/admin/add-new-poetry`);
+console.log(`##admin ${GET_HOST}:${PORT}/api/admin/add-new-poetry`);
 exports.toAddNewPoetry = (req, res) => {
     const {
         title, 
@@ -67,7 +68,7 @@ exports.toAddNewPoetry = (req, res) => {
 };
 
 /** DELETE /api/admin/delete/:id */
-console.log(`##admin http://localhost:${PORT}/api/admin/delete/:id`);
+console.log(`##admin ${GET_HOST}:${PORT}/api/admin/delete/:id`);
 exports.deletePoetryById = (req, res) => {
     const {id} = req.params;
 

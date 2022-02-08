@@ -5,7 +5,6 @@ const app = express();
 const helmet = require('helmet'); // creates headers that protect from attacks (security)
 const cors = require('cors');
 
-const email = require('./api/email.js');
 const admin = require('./api/admin.js');
 const poetryApi = require('./api/poetry.js');
 
@@ -16,6 +15,7 @@ const whitelist = [
     process.env.LOCALHOST_8084,
     process.env.PRODUCTION,
     process.env.TEST_DEVELOP,
+    process.env.GET_HOST
 ];
 
 const corsOptions = {
@@ -43,9 +43,6 @@ app.listen(PORT, (req, res) => {
     console.log(`server listening on port: ${PORT}`);
 });
 
-// Email
-app.post('/api/email/add', urlencodedParser, email.toAddUserContact);
-
 // Prod Content
 app.get('/api/poetry/all', poetryApi.getPoetryAll);
 app.get('/api/poetry/:id', poetryApi.getPoetryById);
@@ -57,6 +54,6 @@ app.post('/api/admin/add-new-poetry', jsonencodedParser, admin.toAddNewPoetry);
 app.delete('/api/admin/delete/:id', admin.deletePoetryById);
 
 // app.get('/api/admin/upload', admin.adminUploadFromJSON);
-app.get('/api/admin/end', admin.endConnection);
+// app.get('/api/admin/end', admin.endConnection);
 
 module.exports = app;

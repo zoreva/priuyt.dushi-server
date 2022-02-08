@@ -1,4 +1,5 @@
 const PORT = process.env.PORT || 8080;
+const GET_HOST = process.env.GET_HOST || 'http://localhost';
 const fs = require('fs');
 
 // Data
@@ -12,7 +13,7 @@ fs.readFile('database/test_counter.json', 'utf8', (err, data) => {
 
 // Api
 
-console.log(`##test http://localhost:${PORT}/api/test/counter`);
+console.log(`##test ${GET_HOST}:${PORT}/api/test/counter`);
 exports.testCounter = (req, res) => {
     console.log('test!!!!!');
     counter.value++;
@@ -24,7 +25,7 @@ exports.testCounter = (req, res) => {
 };
 
 
-console.log(`##test http://localhost:${PORT}/api/test/write-file`);
+console.log(`##test ${GET_HOST}:${PORT}/api/test/write-file`);
 exports.testWriteFile = (req, res) => {
     var json = JSON.stringify(counter);
    

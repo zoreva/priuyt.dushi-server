@@ -1,4 +1,5 @@
 const PORT = process.env.PORT || 8080;
+const GET_HOST = process.env.GET_HOST || 'http://localhost';
 
 const {divCeil} = require('../utils/divCeil');
 const {nanoid} = require('nanoid');
@@ -14,7 +15,7 @@ const connectDB = function () {
 }
 
 /** GET /api/poetry/all */
-console.log(`##poetry http://localhost:${PORT}/api/poetry/all`);
+console.log(`##poetry ${GET_HOST}:${PORT}/api/poetry/all`);
 exports.getPoetryAll = (req, res) => {
     const {pageNumber, counterContent} = req.query;
 
@@ -46,7 +47,7 @@ exports.getPoetryAll = (req, res) => {
 };
 
 /** GET /api/poetry/:id */
-console.log(`##poetry http://localhost:${PORT}/api/poetry/:id`);
+console.log(`##poetry ${GET_HOST}:${PORT}/api/poetry/:id`);
 exports.getPoetryById = (req, res) => {
     const {id} = req.params;
 
