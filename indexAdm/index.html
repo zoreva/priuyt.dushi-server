@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <style>.form-field {width: 400px;display: flex;justify-content: space-between;}.form-field input,.form-field textarea {width: 280px;}</style>
+</head>
+<body>
+    <main class="container">
+        <h1>webreznov application</h1><h3>This page was running at <span id="DATE_SERVER_START"></span></h3>
+
+        <!-- <button type="button" class="btn btn-success" onclick="postAddStory();">Admin_POST_add_story</button> -->
+        <!-- <a onclick="fetch('http://localhost:8084/api/admin/upload')" class="btn btn-danger d-inline m-3">UPLOAD from JSON</a> -->
+        <!-- <a onclick="fetch('http://localhost:8084/api/admin/end')" class="btn btn-danger d-inline m-3">END DB CONNECTION</a> -->
+        
+        <div class="mt-5 mb-5">
+            <form enctype="multipart/form-data" name="addNewPoetryForm" id="addNewPoetryForm">
+                <div class="mb-3 form-field">
+                    <label for="title">title</label>
+                    <input type="text" name="title" placeholder="title" id="title"/>
+                </div>
+
+                <div class="mb-3 form-field">
+                    <label for="poetryType">poetryType</label>
+                    <input type="text" name="poetryType" placeholder="poetryType" id="poetryType"/>
+                </div>
+
+                <div class="mb-3 form-field">
+                    <label for="contentPoetry">contentPoetry</label>
+                    <textarea type="text" name="contentPoetry" placeholder="contentPoetry" id="contentPoetry"></textarea>
+                </div>
+
+                <div class="mb-3 form-field">
+                    <label for="createDate">createDate</label>
+                    <input type="text" name="createDate" placeholder="createDate" id="createDate"/>
+                </div>
+
+                <div class="mb-3 form-field">
+                    <label for="background">background</label>
+                    <input type="text" name="background" placeholder="background" id="background"/>
+                </div>
+
+                <div class="mb-3 form-field">
+                    <label for="book">book</label>
+                    <input type="text" name="book" placeholder="book" id="book"/>
+                </div>
+
+            </form>
+            <button class="btn btn-success" onclick="addNewPoetry()">Добавить</button>
+        </div>
+
+        <button type="button" class="btn btn-primary" onclick="getAllStoriesButton();">Admin_GET_stories-all</button>
+
+        <table class="table" id="resultBlock">
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">create date</th>
+                <th scope="col">title</th>
+                <th scope="col">poetry type</th>
+                <th scope="col">content</th>
+                <th scope="col">background</th>
+                <th scope="col">book</th>
+                <th scope="col">actions</th>
+            </tr>
+        </table>
+    </main>
+
+    <script>
+        const DATE_SERVER_START = new Date();
+        const dateSpan = document.getElementById('DATE_SERVER_START');
+        dateSpan.innerText = DATE_SERVER_START;
+
+        const resultBlock = document.getElementById('resultBlock');
+
+        function getAllStoriesButton() {
+            fetch('http://localhost:8084/api/admin/get/all')
+            .then((res) => res.json())
+            .then((data) => data.map((item) => {
+                resultBlock.insertAdjacentHTML('beforeend', `
+                        <tr>
+                            <td>${item.id}</td>
+                            <td>${item.create_date}</td>
+                            <td>${item.title}</td>
+                            <td>${item.poetry_type}</td>
+                            <td>${item.content_poetry}</td>
+                            <td>${item.background}</td>
+                            <td>${item.book}</td>
+                            <td>
+                                <a onclick="fetch('http://localhost:8084/api/admin/delete/${item.id}', {method: 'DELETE'})" class="btn btn-danger d-inline">Del</a>
+                            </td>
+                        </tr>
+                    `)
+            }))
+        }
+
+        function mapDataToServer() {
+            const elem = (id) => document.getElementById(id);
+
+            const title = elem('title');
+            const poetryType = elem('poetryType');
+            const contentPoetry = elem('contentPoetry');
+            const createDate = elem('createDate');
+            const background = elem('background');
+            const book = elem('book');
+            
+            return {
+                title: title.value, 
+                poetryType: poetryType.value,  
+                contentPoetry: contentPoetry.value, 
+                createDate: createDate.value,
+                background: background.value,
+                book: book.value,
+            }
+        }
+
+        
+        async function addNewPoetry() {
+            const addNewPoetryForm = new FormData(document.getElementById('addNewPoetryForm'));
+
+            let response = await fetch('http://localhost:8084/api/admin/add-new-poetry', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json;charset=utf-8'
+                    // 'Content-Type': 'application/x-www-form-urlencoded',
+                    // 'Content-Type': 'multipart/form-data',
+                },
+                body: JSON.stringify(mapDataToServer()),
+            });
+            let result = await response.json();
+            alert(result.message);
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+</body>
+</html>
