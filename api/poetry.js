@@ -36,8 +36,7 @@ exports.getPoetryAll = (req, res) => {
 			client.end();
 			return res.sendStatus(500);
 		}
-        console.log(resultDb.rows[0].count);
-        return getPortitionData(resultDb.rows[0].count);
+        return getPortitionData(+resultDb.rows[0].count);
     })
 	
     function getPortitionData(rowCount) {
