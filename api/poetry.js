@@ -46,10 +46,19 @@ exports.getPoetryAll = (req, res) => {
                 client.end();
                 return res.sendStatus(500);
             }    
+			const prepareArrayToClient = resultDb.rows.map((item) => ({
+				id: item.id,
+				title: item.title,
+				book: item.book,
+				poetryType: item.poetry_type,
+				createDate: item.create_date,
+				background: item.background,
+			}))
+
             res.send({
                 pageCounter: divCeil(rowCount, counterContent),
                 count: rowCount,
-                array: resultDb.rows,
+                array: prepareArrayToClient,
             });
             client.end();
         });
@@ -73,7 +82,17 @@ exports.getPoetryById = (req, res) => {
 			client.end();
 			return res.sendStatus(500);
 		}
-		res.send(resultDb.rows);
+		const prepareDataToClient = {
+			id: resultDb.rows[0].id,
+			title: resultDb.rows[0].title,
+			book: resultDb.rows[0].book,
+			poetryType: resultDb.rows[0].poetry_type,
+			contentPoetry: resultDb.rows[0].content_poetry,
+			createDate: resultDb.rows[0].create_date,
+			background: resultDb.rows[0].background,
+		}
+
+		res.send(prepareDataToClient);
 		client.end();
 	});
 	return;
