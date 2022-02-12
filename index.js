@@ -46,6 +46,8 @@ app.listen(PORT, (req, res) => {
 // Prod Content
 app.get('/api/poetry/all', poetryApi.getPoetryAll);
 app.get('/api/poetry/:id', poetryApi.getPoetryById);
+app.get('/api/poetry/:idPoetry/get-views', poetryApi.getViewsPoetry);
+app.post('/api/poetry/:idPoetry/add-views', poetryApi.addViewsPoetry);
 
 // Admin Panel
 app.get('/', (req, res) => res.sendfile(__dirname + '/indexAdm/index.html'));
