@@ -116,7 +116,7 @@ exports.getViewsPoetry = (req, res) => {
 				return res.sendStatus(500);
 			}
 
-			res.send(resultDb.rows.length ? +resultDb.rows[0].counter : 0);
+			res.send({counter: resultDb.rows.length ? +resultDb.rows[0].counter : 0});
 			client.end();
 		}
 	);
