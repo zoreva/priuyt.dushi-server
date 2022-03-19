@@ -9,38 +9,38 @@ const admin = require('./api/admin.js');
 const poetryApi = require('./api/poetry.js');
 
 const whitelist = [
-    process.env.LOCALHOST_3000,
-    process.env.LOCALHOST_8000,
-    process.env.LOCALHOST_8080,
-    process.env.LOCALHOST_8084,
-    process.env.PRODUCTION,
-    process.env.TEST_DEVELOP,
-    process.env.GET_HOST
+	process.env.LOCALHOST_3000,
+	process.env.LOCALHOST_8000,
+	process.env.LOCALHOST_8080,
+	process.env.LOCALHOST_8084,
+	process.env.PRODUCTION,
+	process.env.TEST_DEVELOP,
+	process.env.GET_HOST,
 ];
 
 const corsOptions = {
-    origin: function (origin, callback) {
-        console.log('** Origin of request ' + origin);
-        if (whitelist.indexOf(origin) !== -1 || !origin) {
-            console.log('Origin acceptable');
-            callback(null, true);
-        } else {
-            console.log('Origin rejected');
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+	origin: function (origin, callback) {
+		console.log('** Origin of request ' + origin);
+		if (whitelist.indexOf(origin) !== -1 || !origin) {
+			console.log('Origin acceptable');
+			callback(null, true);
+		} else {
+			console.log('Origin rejected');
+			callback(new Error('Not allowed by CORS'));
+		}
+	},
 };
 app.use(helmet());
 app.use(cors(corsOptions));
 
 const urlencodedParser = bodyParser.urlencoded({
-    extended: false,
+	extended: false,
 });
 const jsonencodedParser = bodyParser.json();
 
 const PORT = process.env.PORT || 8084;
 app.listen(PORT, (req, res) => {
-    console.log(`server listening on port: ${PORT}`);
+	console.log(`server listening on port: ${PORT}`);
 });
 
 // Prod Content
@@ -51,9 +51,12 @@ app.post('/api/poetry/:idPoetry/add-views', poetryApi.addViewsPoetry);
 
 // Admin Panel
 app.get('/', (req, res) => res.sendfile(__dirname + '/indexAdm/index.html'));
-app.get('/api/admin/get/all', admin.getPoetryAll);
-app.post('/api/admin/add-new-poetry', jsonencodedParser, admin.toAddNewPoetry);
-app.delete('/api/admin/delete/:id', admin.deletePoetryById);
+
+
+app.post('/api/admin/login', jsonencodedParser, admin.login);//login logic
+app.get('/api/admin/get/all', [], admin.getPoetryAll);
+app.post('/api/admin/add-new-poetry', [jsonencodedParser], admin.toAddNewPoetry);
+app.delete('/api/admin/delete/:id', [], admin.deletePoetryById);
 
 // app.get('/api/admin/upload', admin.adminUploadFromJSON);
 // app.get('/api/admin/end', admin.endConnection);
